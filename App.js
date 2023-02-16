@@ -16,19 +16,23 @@ const UserLocationSearch = () => {
   }, []);
 
   const handleSearch = async () => {
-    const response = await fetch(`http://localhost:8800/search/location?lat=${userLocation.lat}&lng=${userLocation.lng}`, {
-      headers : { 
+    const response = await fetch('http://localhost:8800/api/pins/', {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-
-    })
-    .then((response) => response.json())
-    .then((messages) => {console.log("yes");})
+      },
+      body: JSON.stringify({
+        loc: {
+          type: 'Point',
+          coordinates: [parseFloat(userLocation.lng), parseFloat(userLocation.lat)],
+        },
+      }),
+    });
+  
     const data = await response.json();
     console.log(data);
   };
-
+  
   return (
     <div>
       <p>User location: {userLocation.lat}, {userLocation.lng}</p>
